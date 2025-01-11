@@ -1,6 +1,10 @@
 <template>
   <div>
-    <AlphabetComponent :isWordGuessed="isWordGuessed" @letter-clicked="handleLetterClick" />
+    <AlphabetComponent
+      :isWordGuessed="isWordGuessed"
+      v-model:clickedLetters="clickedLetters"
+      @letter-clicked="handleLetterClick"
+    />
     <GuessWordComponent :selected-letters="selectedLetters" @word-is-guessed="handleWordGuessed" />
     <button
       @click="startNewGame"
@@ -18,6 +22,7 @@ import GuessWordComponent from './components/GuessWordComponent.vue'
 import { ref } from 'vue'
 
 const selectedLetters = ref([])
+const clickedLetters = ref([])
 const isWordGuessed = ref(false)
 
 function handleLetterClick(letter) {
@@ -32,6 +37,7 @@ function handleWordGuessed(isGuessed) {
 
 function startNewGame() {
   selectedLetters.value = []
+  clickedLetters.value = []
   isWordGuessed.value = false
 }
 </script>

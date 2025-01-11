@@ -13,31 +13,34 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { defineEmits } from 'vue'
 
 const props = defineProps({
   isWordGuessed: {
     type: Boolean,
     required: true,
   },
+  clickedLetters: {
+    type: Array,
+    required: true,
+  },
 })
 
-const letters = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ']
-const clickedLetters = ref([])
+const emit = defineEmits(['letter-clicked', 'update:clickedLetters'])
 
-const emit = defineEmits(['letter-clicked'])
+const letters = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ']
 
 function handleClick(letter) {
-  if (!clickedLetters.value.includes(letter)) {
-    clickedLetters.value.push(letter)
+  if (!props.clickedLetters.includes(letter)) {
+    emit('update:clickedLetters', [...props.clickedLetters, letter])
     emit('letter-clicked', letter)
   }
 }
 
 function getLetterClass(letter) {
   return {
-    'bg-gray-500 cursor-not-allowed': clickedLetters.value.includes(letter),
-    'bg-blue-500 cursor-pointer': !clickedLetters.value.includes(letter),
+    'bg-gray-500 cursor-not-allowed': props.clickedLetters.includes(letter),
+    'bg-blue-500 cursor-pointer': !props.clickedLetters.includes(letter),
   }
 }
 </script>
