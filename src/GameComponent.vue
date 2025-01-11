@@ -1,10 +1,11 @@
 <template>
   <div>
     <AlphabetComponent
-      :isWordGuessed="isWordGuessed"
       v-model:clickedLetters="clickedLetters"
+      :isWordGuessed="isWordGuessed"
       @letter-clicked="handleLetterClick"
     />
+    <ClockComponent ref="clockRef" :isRunning="isClockRunning" @time-updated="updateElapsedTime" />
     <GuessWordComponent :selected-letters="selectedLetters" @word-is-guessed="handleWordGuessed" />
     <button
       @click="startNewGame"
@@ -14,16 +15,19 @@
     </button>
   </div>
 </template>
-
 <script setup>
+import { ref } from 'vue'
+import ClockComponent from './components/ClockComponent.vue'
 import AlphabetComponent from './components/AlphabetComponent.vue'
 import GuessWordComponent from './components/GuessWordComponent.vue'
-
-import { ref } from 'vue'
 
 const selectedLetters = ref([])
 const clickedLetters = ref([])
 const isWordGuessed = ref(false)
+const isClockRunning = ref(false)
+const elapsedTime = ref(0)
+
+const clockRef = ref(null)
 
 function handleLetterClick(letter) {
   if (!selectedLetters.value.includes(letter)) {
@@ -33,11 +37,21 @@ function handleLetterClick(letter) {
 
 function handleWordGuessed(isGuessed) {
   isWordGuessed.value = isGuessed
+  isClockRunning.value = !isGuessed // Stop clock when the word is guessed
 }
 
 function startNewGame() {
   selectedLetters.value = []
   clickedLetters.value = []
   isWordGuessed.value = false
+  isClockRunning.value = true
+
+  if (clockRef.value) {
+    clockRef.value.resetClock()
+  }
+}
+
+function updateElapsedTime(seconds) {
+  elapsedTime.value = seconds
 }
 </script>
