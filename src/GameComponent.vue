@@ -3,6 +3,7 @@
     <AlphabetComponent
       v-model:clickedLetters="clickedLetters"
       :isWordGuessed="isWordGuessed"
+      :isRunning="isClockRunning"
       @letter-clicked="handleLetterClick"
     />
     <ClockComponent ref="clockRef" :isRunning="isClockRunning" @time-updated="updateElapsedTime" />
@@ -37,7 +38,7 @@ function handleLetterClick(letter) {
 
 function handleWordGuessed(isGuessed) {
   isWordGuessed.value = isGuessed
-  isClockRunning.value = !isGuessed // Stop clock when the word is guessed
+  isClockRunning.value = !isGuessed
 }
 
 function startNewGame() {

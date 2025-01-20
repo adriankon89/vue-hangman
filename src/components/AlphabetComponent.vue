@@ -1,5 +1,5 @@
 <template>
-  <div class="h-12">
+  <div class="h-12" :class="{ 'pointer-events-none opacity-50': !props.isRunning }">
     <span
       v-for="letter in letters"
       :key="letter"
@@ -24,10 +24,13 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  isRunning: {
+    type: Boolean,
+    required: false,
+  },
 })
 
 const emit = defineEmits(['letter-clicked', 'update:clickedLetters'])
-
 const letters = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ']
 
 function handleClick(letter) {
