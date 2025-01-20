@@ -16,7 +16,9 @@
     </button>
   </div>
 </template>
+
 <script setup>
+import axios from 'axios'
 import { ref } from 'vue'
 import ClockComponent from './components/ClockComponent.vue'
 import AlphabetComponent from './components/AlphabetComponent.vue'
@@ -27,8 +29,20 @@ const clickedLetters = ref([])
 const isWordGuessed = ref(false)
 const isClockRunning = ref(false)
 const elapsedTime = ref(0)
+const word = ref('')
+const maskedWord = ref('')
 
 const clockRef = ref(null)
+
+async function fetchWord() {
+  try {
+    const response = await axios.get('http://localhost:3000/words/random')
+    word.value = response.data.word
+    maskedWord.value = word.value.replace(/./g, '_')
+  } catch (error) {
+    console.error('Error fetching word:', error)
+  }
+}
 
 function handleLetterClick(letter) {
   if (!selectedLetters.value.includes(letter)) {
@@ -46,7 +60,7 @@ function startNewGame() {
   clickedLetters.value = []
   isWordGuessed.value = false
   isClockRunning.value = true
-
+  fetchWord()
   if (clockRef.value) {
     clockRef.value.resetClock()
   }
