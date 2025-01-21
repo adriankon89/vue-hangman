@@ -7,7 +7,11 @@
       @letter-clicked="handleLetterClick"
     />
     <ClockComponent ref="clockRef" :isRunning="isClockRunning" @time-updated="updateElapsedTime" />
-    <GuessWordComponent :selected-letters="selectedLetters" @word-is-guessed="handleWordGuessed" />
+    <GuessWordComponent
+      :wordToGuess="word"
+      :selected-letters="selectedLetters"
+      @word-is-guessed="handleWordGuessed"
+    />
     <button
       @click="startNewGame"
       class="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
@@ -30,15 +34,12 @@ const isWordGuessed = ref(false)
 const isClockRunning = ref(false)
 const elapsedTime = ref(0)
 const word = ref('')
-const maskedWord = ref('')
-
 const clockRef = ref(null)
 
 async function fetchWord() {
   try {
     const response = await axios.get('http://localhost:3000/words/random')
     word.value = response.data.word
-    maskedWord.value = word.value.replace(/./g, '_')
   } catch (error) {
     console.error('Error fetching word:', error)
   }
@@ -55,12 +56,12 @@ function handleWordGuessed(isGuessed) {
   isClockRunning.value = !isGuessed
 }
 
-function startNewGame() {
+async function startNewGame() {
   selectedLetters.value = []
   clickedLetters.value = []
   isWordGuessed.value = false
   isClockRunning.value = true
-  fetchWord()
+  await fetchWord()
   if (clockRef.value) {
     clockRef.value.resetClock()
   }

@@ -6,10 +6,13 @@
         :key="index"
         class="border-solid border-2 border-blue-500 p-6 m-2"
       >
-        <span v-if="props.selectedLetters.map((l) => l.toLowerCase()).includes(char.toLowerCase())">
-          {{ char }}
+        <span>
+          {{
+            props.selectedLetters.map((l) => l.toLowerCase()).includes(char.toLowerCase())
+              ? char
+              : '_'
+          }}
         </span>
-        <span v-else>_</span>
       </div>
     </div>
 
@@ -20,26 +23,36 @@
 </template>
 
 <script setup>
-import { computed, defineEmits } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const props = defineProps({
   selectedLetters: {
     type: Array,
     required: true,
   },
+  wordToGuess: {
+    type: String,
+    required: true,
+  },
 })
 
-const wordToGuess = 'Leon'
-const splittedWordToGuess = wordToGuess.split('')
-const emit = defineEmits(['word-is-guessed'])
+const splittedWordToGuess = ref([])
+
+watch(
+  () => props.wordToGuess,
+  (newWord) => {
+    splittedWordToGuess.value = newWord.split('')
+  },
+  { immediate: true },
+)
 
 const isGuessed = computed(() => {
-  let guess = splittedWordToGuess.every((char) =>
-    props.selectedLetters.map((l) => l.toLowerCase()).includes(char.toLowerCase()),
-  )
-  if (guess) {
-    emit('word-is-guessed', true)
+  if (props.wordToGuess) {
+    const guess = splittedWordToGuess.value.every((char) =>
+      props.selectedLetters.map((l) => l.toLowerCase()).includes(char.toLowerCase()),
+    )
+    return guess
   }
-  return guess
+  return false
 })
 </script>
