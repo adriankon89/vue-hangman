@@ -36,6 +36,8 @@ const props = defineProps({
   },
 })
 
+const emit = defineEmits(['word-is-guessed'])
+
 const splittedWordToGuess = ref([])
 
 watch(
@@ -51,6 +53,9 @@ const isGuessed = computed(() => {
     const guess = splittedWordToGuess.value.every((char) =>
       props.selectedLetters.map((l) => l.toLowerCase()).includes(char.toLowerCase()),
     )
+    if (guess) {
+      emit('word-is-guessed', props.wordToGuess)
+    }
     return guess
   }
   return false
