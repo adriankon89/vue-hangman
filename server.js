@@ -11,11 +11,11 @@ app.use(express.json())
 
 // Endpoint to get a random word from the database
 app.get('/words/random', (req, res) => {
-  db.get('SELECT word FROM words ORDER BY RANDOM() LIMIT 1', [], (err, row) => {
+  db.get('SELECT * FROM words ORDER BY RANDOM() LIMIT 1', [], (err, row) => {
     if (err) {
       return res.status(500).json({ error: err.message })
     }
-    res.json({ word: row.word })
+    res.json({ word: row })
   })
 })
 

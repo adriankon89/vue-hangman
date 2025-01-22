@@ -10,6 +10,8 @@
     <GuessWordComponent
       :wordToGuess="word"
       :selected-letters="selectedLetters"
+      :category="category"
+      :difficulty="difficulty"
       @word-is-guessed="handleWordGuessed"
     />
     <button
@@ -34,12 +36,16 @@ const isWordGuessed = ref(false)
 const isClockRunning = ref(false)
 const elapsedTime = ref(0)
 const word = ref('')
+const category = ref('')
+const difficulty = ref(0)
 const clockRef = ref(null)
 
 async function fetchWord() {
   try {
     const response = await axios.get('http://localhost:3000/words/random')
-    word.value = response.data.word
+    word.value = response.data.word.word
+    category.value = response.data.word.category
+    difficulty.value = response.data.word.difficulty
   } catch (error) {
     console.error('Error fetching word:', error)
   }

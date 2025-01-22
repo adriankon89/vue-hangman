@@ -1,5 +1,16 @@
 <template>
   <div class="flex flex-col items-center">
+    <!-- Display category and difficulty -->
+    <div class="mb-4 text-gray-700 text-lg">
+      <p>
+        Category: <span class="font-bold">{{ props.category }}</span>
+      </p>
+      <p>
+        Difficulty: <span class="font-bold">{{ props.difficulty }}</span>
+      </p>
+    </div>
+
+    <!-- Display the word to guess -->
     <div class="flex">
       <div
         v-for="(char, index) in splittedWordToGuess"
@@ -16,6 +27,7 @@
       </div>
     </div>
 
+    <!-- Congratulatory message -->
     <div v-if="isGuessed" class="mt-4 text-green-500 text-2xl font-bold">
       🎉 Congrats! You guessed the word! 🎉
     </div>
@@ -32,6 +44,14 @@ const props = defineProps({
   },
   wordToGuess: {
     type: String,
+    required: true,
+  },
+  category: {
+    type: String,
+    required: true,
+  },
+  difficulty: {
+    type: Number,
     required: true,
   },
 })
