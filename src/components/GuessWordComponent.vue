@@ -1,16 +1,16 @@
 <template>
   <div class="flex flex-col items-center">
-    <!-- Display category and difficulty -->
-    <div class="mb-4 text-gray-700 text-lg">
+    <div v-if="wordToGuess" class="mb-4 text-gray-700 text-lg">
       <p>
-        Category: <span class="font-bold">{{ props.category }}</span>
+        Category: <span class="font-bold">{{ props.category }}</span> Miss shots:
+        <span class="font-bold">{{ missShots }}</span>
       </p>
       <p>
-        Difficulty: <span class="font-bold">{{ props.difficulty }}</span>
+        Difficulty: <span class="font-bold">{{ props.difficulty }}</span> Hit shots:
+        <span class="font-bold">{{ hitShots }}</span>
       </p>
     </div>
 
-    <!-- Display the word to guess -->
     <div class="flex">
       <div
         v-for="(char, index) in splittedWordToGuess"
@@ -27,7 +27,6 @@
       </div>
     </div>
 
-    <!-- Congratulatory message -->
     <div v-if="isGuessed" class="mt-4 text-green-500 text-2xl font-bold">
       🎉 Congrats! You guessed the word! 🎉
     </div>
@@ -59,6 +58,8 @@ const props = defineProps({
 const emit = defineEmits(['word-is-guessed'])
 
 const splittedWordToGuess = ref([])
+const missShots = ref(0)
+const hitShots = ref(0)
 
 watch(
   () => props.wordToGuess,
@@ -66,6 +67,26 @@ watch(
     splittedWordToGuess.value = newWord.split('')
   },
   { immediate: true },
+)
+
+watch(
+  () => props.selectedLetters,
+  (newSelectedLetters) => {
+    if (props.wordToGuess) {
+      const wordChars = splittedWordToGuess.value.map((char) => char.toLowerCase())
+
+      const missedCount = newSelectedLetters.filter(
+        (letter) => !wordChars.includes(letter.toLowerCase()),
+      ).length
+      missShots.value = missedCount
+
+      const hitCount = newSelectedLetters.filter((letter) =>
+        wordChars.includes(letter.toLowerCase()),
+      ).length
+      hitShots.value = hitCount
+    }
+  },
+  { deep: true },
 )
 
 const isGuessed = computed(() => {
