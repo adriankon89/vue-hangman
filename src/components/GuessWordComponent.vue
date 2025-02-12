@@ -3,11 +3,11 @@
     <div v-if="wordToGuess" class="mb-4 text-gray-700 text-lg">
       <p>
         Category: <span class="font-bold">{{ props.category }}</span> Miss shots:
-        <span class="font-bold">{{ missShots }}</span>
+        <span class="font-bold text-red-500">{{ missShots }}</span>
       </p>
       <p>
         Difficulty: <span class="font-bold">{{ props.difficulty }}</span> Hit shots:
-        <span class="font-bold">{{ hitShots }}</span>
+        <span class="font-bold text-green-400">{{ hitShots }}</span>
       </p>
     </div>
 

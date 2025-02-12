@@ -6,7 +6,7 @@ import GameComponent from './GameComponent.vue'
   <header>
     <div class="wrapper"></div>
   </header>
-  <main>
+  <main class="flex justify-center">
     <GameComponent />
   </main>
 </template>

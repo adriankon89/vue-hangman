@@ -1,5 +1,5 @@
 <template>
-  <div class="h-12" :class="{ 'pointer-events-none opacity-50': !props.isRunning }">
+  <div class="h-12 mt-12" :class="{ 'pointer-events-none opacity-50': !props.isRunning }">
     <span
       v-for="letter in letters"
       :key="letter"

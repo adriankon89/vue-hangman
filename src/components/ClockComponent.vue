@@ -1,5 +1,5 @@
 <template>
-  <div class="text-xl font-bold">
+  <div v-show="isRunning" class="text-xl font-bold flex justify-center mt-10 mb-4">
     {{ formattedTime }}
   </div>
 </template>

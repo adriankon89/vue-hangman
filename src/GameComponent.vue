@@ -14,12 +14,14 @@
       :difficulty="difficulty"
       @word-is-guessed="handleWordGuessed"
     />
-    <button
-      @click="startNewGame"
-      class="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
-    >
-      Start New Game
-    </button>
+    <div class="flex justify-center mt-12">
+      <button
+        @click="startNewGame"
+        class="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
+      >
+        Start New Game
+      </button>
+    </div>
   </div>
 </template>
 
